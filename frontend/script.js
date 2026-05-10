@@ -2,6 +2,25 @@ const API_URL = "http://localhost:3000";
 
 const taskForm = document.getElementById("task-form");
 const tasksList = document.getElementById("tasks-list");
+const userSelect = document.getElementById("user_id");
+
+async function loadUsers() {
+  try {
+    const response = await fetch(`${API_URL}/users`);
+    const users = await response.json();
+
+    userSelect.innerHTML = '<option value="">Selecione o responsável</option>';
+
+    users.forEach((user) => {
+      const option = document.createElement("option");
+      option.value = user.id;
+      option.textContent = `${user.name} (${user.email})`;
+      userSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Erro ao carregar usuários:", error);
+  }
+}
 
 async function loadTasks() {
   try {
@@ -22,6 +41,7 @@ async function loadTasks() {
       taskElement.innerHTML = `
         <h3>${task.title}</h3>
         <p>${task.description || "Sem descrição"}</p>
+        <p><strong>Responsável:</strong> ${task.user_name || "Não definido"}</p>
         <span class="badge ${task.completed ? "completed" : "pending"}">
         ${task.completed ? "Concluída" : "Pendente"}
         </span>
@@ -47,6 +67,7 @@ async function loadTasks() {
 taskForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
+  const user_id = document.getElementById("user_id").value;
   const title = document.getElementById("title").value;
   const description = document.getElementById("description").value;
 
@@ -57,6 +78,7 @@ taskForm.addEventListener("submit", async (event) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
+        user_id: user_id || null,
         title,
         description
       })
@@ -102,4 +124,5 @@ async function deleteTask(id) {
   }
 }
 
+loadUsers();
 loadTasks();

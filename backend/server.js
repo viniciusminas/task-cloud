@@ -34,11 +34,63 @@ app.get("/db-test", async (req, res) => {
   }
 });
 
-// Listar tarefas
+// Listar usuários
+app.get("/users", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM users ORDER BY name ASC"
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({
+      message: "Erro ao listar usuários",
+      error: error.message
+    });
+  }
+});
+
+// Criar usuário
+app.post("/users", async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({
+        message: "Nome e e-mail são obrigatórios"
+      });
+    }
+
+    const result = await pool.query(
+      "INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *",
+      [name, email]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({
+      message: "Erro ao criar usuário",
+      error: error.message
+    });
+  }
+});
+
+// Listar tarefas com responsável
 app.get("/tasks", async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT * FROM tasks ORDER BY id DESC"
+      `SELECT 
+          tasks.id,
+          tasks.user_id,
+          tasks.title,
+          tasks.description,
+          tasks.completed,
+          tasks.created_at,
+          users.name AS user_name,
+          users.email AS user_email
+       FROM tasks
+       LEFT JOIN users ON users.id = tasks.user_id
+       ORDER BY tasks.id DESC`
     );
 
     res.json(result.rows);
@@ -50,10 +102,10 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-// Criar tarefa
+// Criar tarefa com responsável
 app.post("/tasks", async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { user_id, title, description } = req.body;
 
     if (!title) {
       return res.status(400).json({
@@ -62,8 +114,10 @@ app.post("/tasks", async (req, res) => {
     }
 
     const result = await pool.query(
-      "INSERT INTO tasks (title, description) VALUES ($1, $2) RETURNING *",
-      [title, description || null]
+      `INSERT INTO tasks (user_id, title, description) 
+       VALUES ($1, $2, $3) 
+       RETURNING *`,
+      [user_id || null, title, description || null]
     );
 
     res.status(201).json(result.rows[0]);
@@ -79,17 +133,18 @@ app.post("/tasks", async (req, res) => {
 app.put("/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, completed } = req.body;
+    const { user_id, title, description, completed } = req.body;
 
     const result = await pool.query(
       `UPDATE tasks
        SET 
-         title = COALESCE($1, title),
-         description = COALESCE($2, description),
-         completed = COALESCE($3, completed)
-       WHERE id = $4
+         user_id = COALESCE($1, user_id),
+         title = COALESCE($2, title),
+         description = COALESCE($3, description),
+         completed = COALESCE($4, completed)
+       WHERE id = $5
        RETURNING *`,
-      [title, description, completed, id]
+      [user_id, title, description, completed, id]
     );
 
     if (result.rows.length === 0) {
