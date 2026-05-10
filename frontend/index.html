@@ -3,45 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro de Tarefas</title>
+  <title>Task Cloud</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
   <header class="header">
-    <h1>Task Cloud</h1>
-    <p>Aplicação de cadastro de tarefas com frontend, backend e banco PostgreSQL.</p>
+    <div class="header-inner">
+      <div class="logo-wrap">
+        <span class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </span>
+        <h1>Task Cloud</h1>
+      </div>
+      <p class="header-sub">Gerencie suas tarefas com a agilidade e praticidade do Task Cloud</p>
+    </div>
   </header>
 
   <main class="container">
-    <section class="card">
-      <h2>Nova tarefa</h2>
-      <p class="subtitle">Cadastre uma nova atividade para acompanhar no sistema.</p>
 
-      <select id="user_id">
-        <option value="">Selecione o responsável</option>
-      </select>
+    <!-- Formulário -->
+    <section class="card card-form">
+      <div class="card-label">Nova tarefa</div>
+      <h2>Adicionar atividade</h2>
+      <p class="subtitle">Preencha os dados abaixo para registrar uma nova tarefa no sistema.</p>
+
+      <div class="field-group">
+        <label class="field-label" for="user_id">Responsável</label>
+        <div class="select-wrap">
+          <select id="user_id">
+            <option value="">Selecione o responsável</option>
+          </select>
+          <span class="select-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </div>
+      </div>
 
       <form id="task-form">
-        <input 
-          type="text" 
-          id="title" 
-          placeholder="Título da tarefa" 
-          required 
-        />
+        <div class="field-group">
+          <label class="field-label" for="title">Título</label>
+          <input
+            type="text"
+            id="title"
+            placeholder="Ex: Configurar servidor nginx"
+            required
+          />
+        </div>
 
-        <textarea 
-          id="description" 
-          placeholder="Descrição da tarefa"
-        ></textarea>
+        <div class="field-group">
+          <label class="field-label" for="description">Descrição</label>
+          <textarea
+            id="description"
+            placeholder="Descreva o que precisa ser feito..."
+          ></textarea>
+        </div>
 
-        <button type="submit">Cadastrar tarefa</button>
+        <button type="submit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Cadastrar tarefa
+        </button>
       </form>
     </section>
 
-    <section class="card">
-      <h2>Lista de tarefas</h2>
+    <!-- Lista -->
+    <section class="card card-list">
+      <div class="card-label">Lista de tarefas</div>
+      <h2>Atividades</h2>
       <div id="tasks-list" class="tasks-list"></div>
     </section>
+
   </main>
 
   <script src="script.js"></script>
