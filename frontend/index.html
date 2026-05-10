@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Tarefas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>Task Cloud</h1>
+    <p>Aplicação de cadastro de tarefas com frontend, backend e banco PostgreSQL.</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Nova tarefa</h2>
+      <p class="subtitle">Cadastre uma nova atividade para acompanhar no sistema.</p>
+
+      <form id="task-form">
+        <input 
+          type="text" 
+          id="title" 
+          placeholder="Título da tarefa" 
+          required 
+        />
+
+        <textarea 
+          id="description" 
+          placeholder="Descrição da tarefa"
+        ></textarea>
+
+        <button type="submit">Cadastrar tarefa</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Lista de tarefas</h2>
+      <div id="tasks-list" class="tasks-list"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+--docker
+--PRECISO ATRAVESSAR PELO LINK DA AWS 
+--TESTAR A APLICACAO
+--INSTANCIA DE BANCO NO DOCKER SÓ PARA TESTAR A CONEXAO MESMO PARA GARANTIR QUE VAI DAR TUDO CERTO
+--SUBIR NO GITHUB TAMBÉM
+--DOCKER REPOSITORY.
