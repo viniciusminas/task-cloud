@@ -26,7 +26,7 @@ variable "db_password" {
 }
 
 variable "db_name" {
-  default = "taskcloud"
+  default = "task_cloud"
 }
 
 variable "vpc_id" {
