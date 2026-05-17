@@ -4,3 +4,4 @@ backend/.env
 frontend/.env
 npm-debug.log
 .DS_Store
+aws-k3s-rds-lab/terraform.tfvars
